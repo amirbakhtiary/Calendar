@@ -11,8 +11,6 @@ namespace Calendar.Infrastructure.Data.Sql.Config
             builder.HasKey(m => m.Id);
 
             builder.Property(m => m.Name).HasMaxLength(120);
-            //builder.HasMany(m => m.Events).WithMany(e => e.Members);
-            //builder.HasMany(m => m.EventOrganizers).WithOne(e => e.EventOrganizer);
         }
     }
 }

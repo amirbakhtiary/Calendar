@@ -8,10 +8,10 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.RemoveEventItem
 {
     public class RemoveEventItemCommandHandler : IRequestHandler<RemoveEventItemCommand, bool>
     {
-        private readonly IRepository _eventItemRepository;
+        private readonly ICalendarRepository _eventItemRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveEventItemCommandHandler(IRepository eventItemRepository,
+        public RemoveEventItemCommandHandler(ICalendarRepository eventItemRepository,
             IUnitOfWork unitOfWork)
         {
             _eventItemRepository = eventItemRepository;

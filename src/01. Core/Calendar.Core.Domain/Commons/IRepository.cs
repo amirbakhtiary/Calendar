@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Calendar.Core.Domain.Commons
 {
-    public partial interface IRepository//<T> where T : BaseEntity
+    public partial interface ICalendarRepository
     {
         Task<EventItem> GetByIdAsync(Guid id);
         Task<EventItem> AddItemAsync(EventItem entity);

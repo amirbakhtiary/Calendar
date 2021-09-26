@@ -3,6 +3,7 @@ using System.Text.Json;
 using AutoMapper;
 using Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem;
 using Calendar.Core.Domain.Commons;
+using Calendar.Endpoints.WebAPI.Extentions.Mapper;
 using Calendar.Infrastructure.Data.Sql;
 using Calendar.Infrastructure.Data.Sql.Commons;
 using MediatR;
@@ -32,7 +33,7 @@ namespace Calendar.Endpoints.WebAPI.Extentions
 
         public static IServiceCollection AddCustomizeService(this IServiceCollection services)
         {
-            services.AddScoped<IRepository, CalendarRepository>();
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
@@ -49,20 +50,12 @@ namespace Calendar.Endpoints.WebAPI.Extentions
                         Instance = context.HttpContext.Request.Path,
                         Status = StatusCodes.Status400BadRequest,
                         Title = "One or more validation errors have occurred."
-                        //Detail = "Please refer to the errors property for additional details.",
                     };
 
                     return new BadRequestObjectResult(problemDetails)
                     {
                         ContentTypes = { "application/problem+json", "application/problem+xml" }
                     };
-                    //return new BadRequestObjectResult(new ErrorDetails(problemDetails.Status, problemDetails.Title, problemDetails.Instance,
-                    //    context.ModelState.Values.SelectMany(x => x.Errors)
-                    //        .Select(x => new Error(x.ErrorMessage))
-                    //    ))
-                    //{
-                    //    ContentTypes = { "application/problem+json", "application/problem+xml" }
-                    //};
                 };
             });
             return services;
@@ -70,14 +63,21 @@ namespace Calendar.Endpoints.WebAPI.Extentions
 
         public static IServiceCollection AddCustomizedDataStore(this IServiceCollection services, IConfiguration configuration)
         {
-            services
-                .AddDbContext<CalendarDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"),
-                    b =>
-                    {
-                        b.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                        b.MigrationsHistoryTable($"__{nameof(CalendarDBContext)}");
-                    }));
-
+            if (!configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services
+                        .AddDbContext<CalendarDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"),
+                            b =>
+                            {
+                                b.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+                                b.MigrationsHistoryTable($"__{nameof(CalendarDBContext)}");
+                            }));
+            }
+            else
+            {
+                services
+                    .AddDbContext<CalendarDBContext>(options => options.UseInMemoryDatabase("CalendarDB"));
+            }
             return services;
         }
 
@@ -95,11 +95,9 @@ namespace Calendar.Endpoints.WebAPI.Extentions
         {
             services.AddTransient(provider => new MapperConfiguration(cfg =>
             {
-                //cfg.AddProfile(new DataProfile());
-                //cfg.AddProfile(new Mapper.DataProfile(provider.GetService<IHttpContextAccessor>()));
+                cfg.AddProfile(new DataProfile());
             }).CreateMapper());
             return services;
-            //services.AddAutoMapper(Assembly.Load(typeof(AppIdentityDbContext).GetTypeInfo().Assembly.GetName().Name));
         }
 
         public static IServiceCollection ConfigMediatR(this IServiceCollection services)

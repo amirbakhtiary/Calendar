@@ -19,11 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BC4F3539-540
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{21A91B7B-850C-425B-983B-897A223A1EE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar.AplicationService", "src\01. Core\Calendar.AplicationService\Calendar.AplicationService.csproj", "{6D08A2FC-BFDE-4042-A036-6BA38F52721C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.AplicationService", "src\01. Core\Calendar.AplicationService\Calendar.AplicationService.csproj", "{6D08A2FC-BFDE-4042-A036-6BA38F52721C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar.ApplicationService.Test", "test\Calendar.ApplicationService.Test\Calendar.ApplicationService.Test.csproj", "{CA4DB895-0947-4647-926B-BAAF79925ADA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Endpoints.WebAPI.Test", "test\Calendar.ApplicationService.Test\Calendar.Endpoints.WebAPI.Test.csproj", "{CA4DB895-0947-4647-926B-BAAF79925ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar.Infrastructure.Data.Test", "test\Calendar.Infrastructure.Data.Test\Calendar.Infrastructure.Data.Test.csproj", "{AE0580B9-65D8-42EF-957A-F4D08FA71CE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Infrastructure.Data.Test", "test\Calendar.Infrastructure.Data.Test\Calendar.Infrastructure.Data.Test.csproj", "{AE0580B9-65D8-42EF-957A-F4D08FA71CE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,64 @@
+IF OBJECT_ID(N'[__CalendarDBContext]') IS NULL
+BEGIN
+    CREATE TABLE [__CalendarDBContext] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___CalendarDBContext] PRIMARY KEY ([MigrationId])
+    );
+END;
+GO
+
+BEGIN TRANSACTION;
+GO
+
+CREATE TABLE [Location] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(120) NULL,
+    CONSTRAINT [PK_Location] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [Member] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(120) NULL,
+    CONSTRAINT [PK_Member] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [EventItems] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [EventTime] datetime2 NOT NULL,
+    [LocationId] uniqueidentifier NULL,
+    [EventOrganizerId] uniqueidentifier NULL,
+    CONSTRAINT [PK_EventItems] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_EventItems_Location_LocationId] FOREIGN KEY ([LocationId]) REFERENCES [Location] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_EventItems_Member_EventOrganizerId] FOREIGN KEY ([EventOrganizerId]) REFERENCES [Member] ([Id]) ON DELETE NO ACTION
+);
+GO
+
+CREATE TABLE [EventItemMember] (
+    [EventItemsId] uniqueidentifier NOT NULL,
+    [MembersId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_EventItemMember] PRIMARY KEY ([EventItemsId], [MembersId]),
+    CONSTRAINT [FK_EventItemMember_EventItems_EventItemsId] FOREIGN KEY ([EventItemsId]) REFERENCES [EventItems] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_EventItemMember_Member_MembersId] FOREIGN KEY ([MembersId]) REFERENCES [Member] ([Id]) ON DELETE CASCADE
+);
+GO
+
+CREATE INDEX [IX_EventItemMember_MembersId] ON [EventItemMember] ([MembersId]);
+GO
+
+CREATE INDEX [IX_EventItems_EventOrganizerId] ON [EventItems] ([EventOrganizerId]);
+GO
+
+CREATE INDEX [IX_EventItems_LocationId] ON [EventItems] ([LocationId]);
+GO
+
+INSERT INTO [__CalendarDBContext] ([MigrationId], [ProductVersion])
+VALUES (N'20210926145217_init', N'5.0.10');
+GO
+
+COMMIT;
+GO
+

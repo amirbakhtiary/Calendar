@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Calendar.Infrastructure.Data.Sql
 {
-    public class CalendarRepository : IRepository//<EventItem>
+    public class CalendarRepository : ICalendarRepository
     {
         private DbSet<EventItem> DbSet { get; }
         public CalendarRepository(CalendarDBContext calendarDBContext)

@@ -18,7 +18,6 @@ namespace Calendar.Infrastructure.Data.Sql.Config
 
             builder.HasOne(e => e.EventOrganizer).WithMany(m=> m.EventOrganizers);
             builder.HasMany(e => e.Members).WithMany(m => m.EventItems);
-            //builder.Property(e => e.Members).HasColumnName("Member");
         }
     }
 }

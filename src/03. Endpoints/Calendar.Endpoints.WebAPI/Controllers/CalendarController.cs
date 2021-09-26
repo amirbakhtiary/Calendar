@@ -1,4 +1,5 @@
-﻿using Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem;
+﻿using AutoMapper;
+using Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem;
 using Calendar.AplicationService.Commands.EventItemAggregate.RemoveEventItem;
 using Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem;
 using Calendar.Core.Domain;
@@ -7,6 +8,7 @@ using Calendar.Infrastructure.Data.Sql.Queries.EventItemAggregate.GetEventItemBy
 using Calendar.Infrastructure.Data.Sql.Queries.EventItemAggregate.GetEventItemByOrganizer;
 using Calendar.Infrastructure.Data.Sql.Queries.EventItemAggregate.GetEventItemOrderByTime;
 using Calendar.Infrastructure.Data.Sql.Queries.EventItemAggregate.GetEventItems;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,15 +18,17 @@ using System.Threading.Tasks;
 
 namespace Calendar.Endpoints.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CalendarController : BaseApiController
     {
         private readonly ILogger<CalendarController> _logger;
+        private readonly IMapper _mapper;
 
-        public CalendarController(ILogger<CalendarController> logger)
+        public CalendarController(ILogger<CalendarController> logger, IMapper mapper, IMediator mediator) : base(mediator)
         {
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -59,14 +63,9 @@ namespace Calendar.Endpoints.WebAPI.Controllers
         [ProducesResponseType(typeof(AddNewEventItemDto), (int)HttpStatusCode.Created)]
         public async Task<ActionResult> CreateEvent(AddEventItemModel addEventItem)
         {
-            var eventItem = await Mediator.Send(new AddNewEventItemCommand
-            {
-                Name = addEventItem.Name,
-                EventTime = addEventItem.Time,
-                EventOrganizer = addEventItem.EventOrganizer,
-                Location = addEventItem.Location,
-                Members = addEventItem.Members
-            });
+            var dataModel = _mapper.Map<AddNewEventItemCommand>(addEventItem);
+
+            var eventItem = await Mediator.Send(dataModel);
 
             return Created(Url.Action(nameof(GetEventItem), new { id = eventItem.Id }), eventItem);
         }
@@ -76,15 +75,10 @@ namespace Calendar.Endpoints.WebAPI.Controllers
         [ProducesResponseType(typeof(UpdateEventItemDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateEvent(Guid id, UpdateEventItemModel editEventItem)
         {
-            var eventUpdateResult = await Mediator.Send(new UpdateEventItemCommand
-            {
-                EventOrganizer = editEventItem.EventOrganizer,
-                EventTime = editEventItem.Time,
-                Id = id,
-                Location = editEventItem.Location,
-                Members = editEventItem.Members,
-                Name = editEventItem.Name
-            });
+            var dataModel = _mapper.Map<UpdateEventItemCommand>(editEventItem);
+            dataModel.Id = id;
+            var eventUpdateResult = await Mediator.Send(dataModel);
+
             if (!eventUpdateResult.IsSuccess)
                 return NotFound();
 

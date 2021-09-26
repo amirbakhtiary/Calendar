@@ -8,10 +8,10 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem
 {
     public class UpdateEventItemCommandHandler : IRequestHandler<UpdateEventItemCommand, UpdateEventItemDto>
     {
-        private readonly IRepository _eventItemRepository;
+        private readonly ICalendarRepository _eventItemRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateEventItemCommandHandler(IRepository eventItemRepository,
+        public UpdateEventItemCommandHandler(ICalendarRepository eventItemRepository,
             IUnitOfWork unitOfWork)
         {
             _eventItemRepository = eventItemRepository;
@@ -28,7 +28,7 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem
                 Name = request.Name,
                 Members = request.Members,
                 EventOrganizer = request.EventOrganizer,
-                EventTime = request.EventTime,
+                EventTime = request.Time,
                 Location = request.Location
             });
 
