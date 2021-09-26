@@ -13,3 +13,4 @@ after run project for add database please go to this address: http://localhost:9
 * [MediatR](https://github.com/jbogard/MediatR)
 * [AutoMapper](https://automapper.org/)
 * [Docker](https://www.docker.com/)
+* SeriLog, Seq
