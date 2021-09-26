@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\02. Infrastructure\Calendar.Infrastructure.Data.Sql\Calendar.Infrastructure.Data.Sql.csproj" />
+    <ProjectReference Include="..\Calendar.Core.Domain\Calendar.Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
