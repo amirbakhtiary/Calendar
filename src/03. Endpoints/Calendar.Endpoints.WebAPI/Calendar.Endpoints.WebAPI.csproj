@@ -31,4 +31,8 @@
     <ProjectReference Include="..\..\02. Infrastructure\Calendar.Infrastructure.Data.Sql\Calendar.Infrastructure.Data.Sql.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>

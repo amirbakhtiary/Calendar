@@ -1,10 +1,11 @@
-version: '3.4'
+version: '3.8'
 
 services:
   calendarapi:
-    image: amirbakhtiary/calnedarendpointsapi
+    image: amirbakhtiary/calendarendpointswebapi:latest
     ports:
       - "9080:80"
+      - "9083:443"
     depends_on:
       - db
   db:
@@ -21,5 +22,3 @@ services:
     environment:
       ACCEPT_EULA: Y
     restart: unless-stopped
-    volumes:
-      - ./seq-data:/data
