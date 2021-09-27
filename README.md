@@ -14,3 +14,7 @@ after run project for add database please go to this address: http://localhost:9
 * [AutoMapper](https://automapper.org/)
 * [Docker](https://www.docker.com/)
 * SeriLog, Seq
+
+## Documentation
+Help for executing the API:
+https://documenter.getpostman.com/view/5287501/UUxxhp6j
