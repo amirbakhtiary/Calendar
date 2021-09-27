@@ -6,6 +6,10 @@ For run the project: docker-compose up
 ### Database Configuration
 after run project for add database please go to this address: http://localhost:9080/api/maintenance/adddb
 
+## Documentation
+Help for executing the API:
+https://documenter.getpostman.com/view/5287501/UUxxhp6j
+
 ## Technologies
 
 * ASP.NET Core 5
@@ -14,7 +18,3 @@ after run project for add database please go to this address: http://localhost:9
 * [AutoMapper](https://automapper.org/)
 * [Docker](https://www.docker.com/)
 * SeriLog, Seq
-
-## Documentation
-Help for executing the API:
-https://documenter.getpostman.com/view/5287501/UUxxhp6j
