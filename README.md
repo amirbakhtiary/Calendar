@@ -4,7 +4,7 @@ Calendar API with ASP.NET Restful API
 For run the project: docker-compose up
 
 ### Database Configuration
-after run project for add database please go to this address: http://localhost:9080/api/v1/maintenance/adddb
+after run project for add database please go to this address: http://localhost:9080/api/maintenance/adddb
 
 ## Technologies
 
