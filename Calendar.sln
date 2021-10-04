@@ -25,12 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Endpoints.WebAPI.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Infrastructure.Data.Test", "test\Calendar.Infrastructure.Data.Test\Calendar.Infrastructure.Data.Test.csproj", "{AE0580B9-65D8-42EF-957A-F4D08FA71CE2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51F14550-353E-4179-A9DE-C4EA63363687}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.yaml = docker-compose.yaml
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.AplicationService.Test", "test\Calendar.AplicationService.Test\Calendar.AplicationService.Test.csproj", "{4CABF5D3-0B53-475C-BC34-3384888118C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar.AplicationService.Test", "test\Calendar.AplicationService.Test\Calendar.AplicationService.Test.csproj", "{4CABF5D3-0B53-475C-BC34-3384888118C9}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DB715C-2131-4574-BB1D-378245BD0361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +63,10 @@ Global
 		{4CABF5D3-0B53-475C-BC34-3384888118C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CABF5D3-0B53-475C-BC34-3384888118C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CABF5D3-0B53-475C-BC34-3384888118C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DB715C-2131-4574-BB1D-378245BD0361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DB715C-2131-4574-BB1D-378245BD0361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DB715C-2131-4574-BB1D-378245BD0361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DB715C-2131-4574-BB1D-378245BD0361}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

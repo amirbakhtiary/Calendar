@@ -1,0 +1,35 @@
+version: '3.4'  
+
+services:
+  calendar.endpoints.webapi:
+    links:
+      - sqlserverService
+    image: ${DOCKER_REGISTRY-}calendarendpointswebapi
+    ports:
+      - "9080:80"
+      - "9083:443"
+    depends_on:
+      - sqlserverService
+    build:
+      context: .
+      dockerfile: src/03. Endpoints/Calendar.Endpoints.WebAPI/Dockerfile
+ 
+  sqlserverService:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    hostname: 'sqlserver'
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "P@ssw0rd"
+    volumes:
+      - ./data/mssql:/var/opt/mssql3
+    ports:
+      - '1733:1433'
+    expose:
+      - 1733
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: Y
+    restart: unless-stopped
