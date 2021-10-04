@@ -1,12 +1,18 @@
-﻿using System.Reflection;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using AutoMapper;
-using Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem;
-using Calendar.Core.Domain.Commons;
+using Calendar.AplicationService.Queries.EventItemAggregate;
 using Calendar.Endpoints.WebAPI.Extentions.Mapper;
+using Calendar.Endpoints.WebAPI.Models;
+using Calendar.Endpoints.WebAPI.Validators;
 using Calendar.Infrastructure.Data.Sql;
-using Calendar.Infrastructure.Data.Sql.Commons;
+using Calendar.Infrastructure.Data.Sql.Repository;
+using Calendar.Infrastructure.Data.Sql.UnitOfWork;
+using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +39,11 @@ namespace Calendar.Endpoints.WebAPI.Extentions
 
         public static IServiceCollection AddCustomizeService(this IServiceCollection services)
         {
-            services.AddScoped<ICalendarRepository, CalendarRepository>();
+            services.AddScoped<IEventItemRepository, EventItemRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IValidator<CreateEventItemModel>, CreateEventItemModelValidator>();
+            services.AddTransient<IValidator<UpdateEventItemModel>, UpdateEventItemModelValidator>();
+
             return services;
         }
 
@@ -66,26 +75,46 @@ namespace Calendar.Endpoints.WebAPI.Extentions
             if (!configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 services
-                        .AddDbContext<CalendarDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"),
+                        .AddDbContext<CalendarContext>(options => options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection"),
                             b =>
                             {
                                 b.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                                b.MigrationsHistoryTable($"__{nameof(CalendarDBContext)}");
+                                b.MigrationsHistoryTable($"__{nameof(CalendarContext)}");
                             }));
             }
             else
             {
                 services
-                    .AddDbContext<CalendarDBContext>(options => options.UseInMemoryDatabase("CalendarDB"));
+                    .AddDbContext<CalendarContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
             }
             return services;
         }
 
         public static IServiceCollection ConfigSwagger(this IServiceCollection services, IConfiguration configuration)
         {
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Calendar.Endpoints.WebAPI", Version = "v1" });
+            //});
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Calendar.Endpoints.WebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Calendar Api",
+                    Description = "A simple API to create or update events",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Amir",
+                        Email = "am.bakhtiary@gmail.com",
+                        Url = new Uri("https://github.com/amirbakhtiary/")
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             return services;
@@ -95,15 +124,14 @@ namespace Calendar.Endpoints.WebAPI.Extentions
         {
             services.AddTransient(provider => new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new DataProfile());
+                cfg.AddProfile(new MappingProfile());
             }).CreateMapper());
             return services;
         }
 
         public static IServiceCollection ConfigMediatR(this IServiceCollection services)
         {
-            services.AddMediatR(Assembly.Load(typeof(AddNewEventItemCommand).GetTypeInfo().Assembly.GetName().Name),
-                Assembly.Load(typeof(CalendarDBContext).GetTypeInfo().Assembly.GetName().Name));
+            services.AddMediatR(Assembly.Load(typeof(EventItemDto).GetTypeInfo().Assembly.GetName().Name));
             return services;
         }
 
@@ -114,6 +142,15 @@ namespace Calendar.Endpoints.WebAPI.Extentions
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
             return services;
+        }
+
+        public static void UpdateDatabase(this IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            using var calendarContext = serviceScope.ServiceProvider.GetService<CalendarContext>();
+            calendarContext.Database.Migrate();
         }
     }
 }

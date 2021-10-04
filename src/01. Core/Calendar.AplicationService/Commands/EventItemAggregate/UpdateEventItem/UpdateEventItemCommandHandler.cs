@@ -1,5 +1,6 @@
-﻿using Calendar.Core.Domain;
-using Calendar.Core.Domain.Commons;
+﻿using Calendar.Core.Domain.Entities;
+using Calendar.Infrastructure.Data.Sql.Repository;
+using Calendar.Infrastructure.Data.Sql.UnitOfWork;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,10 +9,10 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem
 {
     public class UpdateEventItemCommandHandler : IRequestHandler<UpdateEventItemCommand, UpdateEventItemDto>
     {
-        private readonly ICalendarRepository _eventItemRepository;
+        private readonly IEventItemRepository _eventItemRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateEventItemCommandHandler(ICalendarRepository eventItemRepository,
+        public UpdateEventItemCommandHandler(IEventItemRepository eventItemRepository,
             IUnitOfWork unitOfWork)
         {
             _eventItemRepository = eventItemRepository;
@@ -19,7 +20,7 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem
         }
         public async Task<UpdateEventItemDto> Handle(UpdateEventItemCommand request, CancellationToken cancellationToken)
         {
-            var eventItem = await _eventItemRepository.GetByIdAsync(request.Id);
+            var eventItem = await _eventItemRepository.GetEventItemByIdAsync(request.Id, cancellationToken);
             if (eventItem == null)
                 return UpdateEventItemDto.Faild();
 
@@ -31,6 +32,7 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.UpdateEventItem
                 EventTime = request.Time,
                 Location = request.Location
             });
+            _eventItemRepository.Update(eventItem);
 
             await _unitOfWork.SaveAsync(cancellationToken);
 

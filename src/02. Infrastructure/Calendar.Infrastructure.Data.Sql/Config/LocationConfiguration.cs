@@ -1,4 +1,4 @@
-﻿using Calendar.Core.Domain;
+﻿using Calendar.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

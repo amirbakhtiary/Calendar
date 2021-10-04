@@ -1,5 +1,5 @@
-﻿using Calendar.Core.Domain;
-using Calendar.Core.Domain.Commons;
+﻿using Calendar.Infrastructure.Data.Sql.Repository;
+using Calendar.Infrastructure.Data.Sql.UnitOfWork;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,10 +8,10 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.RemoveEventItem
 {
     public class RemoveEventItemCommandHandler : IRequestHandler<RemoveEventItemCommand, bool>
     {
-        private readonly ICalendarRepository _eventItemRepository;
+        private readonly IEventItemRepository _eventItemRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveEventItemCommandHandler(ICalendarRepository eventItemRepository,
+        public RemoveEventItemCommandHandler(IEventItemRepository eventItemRepository,
             IUnitOfWork unitOfWork)
         {
             _eventItemRepository = eventItemRepository;
@@ -20,11 +20,11 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.RemoveEventItem
 
         public async Task<bool> Handle(RemoveEventItemCommand request, CancellationToken cancellationToken)
         {
-            var eventItem = await _eventItemRepository.GetByIdAsync(request.Id);
+            var eventItem = await _eventItemRepository.GetEventItemByIdAsync(request.Id,cancellationToken);
             if (eventItem == null)
                 return false;
 
-            _eventItemRepository.DeleteItem(eventItem);
+            _eventItemRepository.Remove(eventItem);
             await _unitOfWork.SaveAsync(cancellationToken);
             return true;
         }

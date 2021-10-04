@@ -1,21 +1,20 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Calendar.Core.Domain;
-using Calendar.Core.Domain.Commons;
+using Calendar.Core.Domain.Entities;
+using Calendar.Infrastructure.Data.Sql.Repository;
+using Calendar.Infrastructure.Data.Sql.UnitOfWork;
 using MediatR;
 
 namespace Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem
 {
     public class AddNewEventItemCommandHandler : IRequestHandler<AddNewEventItemCommand, AddNewEventItemDto>
     {
-        private readonly ICalendarRepository _eventItemRepository;
+        private readonly IEventItemRepository _eventItemRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddNewEventItemCommandHandler(ICalendarRepository eventItemRepository,
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+        public AddNewEventItemCommandHandler(IEventItemRepository eventItemRepository,
+            IUnitOfWork unitOfWork)
         {
             _eventItemRepository = eventItemRepository;
             _unitOfWork = unitOfWork;
@@ -23,7 +22,7 @@ namespace Calendar.AplicationService.Commands.EventItemAggregate.AddNewEventItem
 
         public async Task<AddNewEventItemDto> Handle(AddNewEventItemCommand request, CancellationToken cancellationToken)
         {
-            var result = await _eventItemRepository.AddItemAsync(EventItem.AddEventItem(new EventItemCommand.AddNewEventItem
+            var result = await _eventItemRepository.AddAsync(EventItem.AddEventItem(new EventItemCommand.AddNewEventItem
             {
                 Name = request.Name,
                 Members = request.Members,

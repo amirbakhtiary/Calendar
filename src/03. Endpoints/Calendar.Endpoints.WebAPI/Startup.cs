@@ -41,14 +41,21 @@ namespace Calendar.Endpoints.WebAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddSerilog();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar.Endpoints.WebAPI v1"));
+
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar API v1");
+                
+            });
+
             app.UseMiddleware<SerilogMiddleware>();
+
+            app.UpdateDatabase();
 
             app.UseHttpsRedirection();
 

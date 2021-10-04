@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Calendar.Endpoints.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.GetEventItems">
+            <summary>
+            Action to see all existing eventItems.
+            </summary>
+            <returns>Returns a list of all eventItems</returns>
+            <response code="200">Returned if the eventItems were loaded</response>
+            <response code="400">Returned if the eventItems couldn't be loaded</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.GetEventItem(System.Guid)">
+            <summary>
+            Action to see eventItem by Id.
+            </summary>
+            <returns>Returns an eventItem by Id</returns>
+            <response code="200">Returned if the eventItem were loaded</response>
+            <response code="400">Returned if the eventItem couldn't be loaded</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.GetEventItemsByOrganizer(System.String)">
+            <summary>
+            Action to see eventItem by eventOrganizer.
+            </summary>
+            <returns>Returns an eventItem by eventOrganizer</returns>
+            <response code="200">Returned if the eventItem were loaded</response>
+            <response code="400">Returned if the eventItem couldn't be loaded</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.GetEventItemOrderByTime">
+            <summary>
+            Action to see eventItems order by time descending.
+            </summary>
+            <returns>Returns list of eventItems order by time descending</returns>
+            <response code="200">Returned if the eventItem were loaded</response>
+            <response code="400">Returned if the eventItem couldn't be loaded</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.CreateEvent(Calendar.Endpoints.WebAPI.Models.CreateEventItemModel)">
+            <summary>
+            Action to create a new eventItem in the database.
+            </summary>
+            <param name="addEventItem">Model to create a new eventItem</param>
+            <returns>Returns the created eventItem</returns>
+            <response code="201">Returned if the eventItem was created</response>
+            <response code="400">Returned if the model couldn't be parsed or the eventItem couldn't be saved</response>
+            <response code="422">Returned when the validation failed</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.UpdateEvent(System.Guid,Calendar.Endpoints.WebAPI.Models.UpdateEventItemModel)">
+            <summary>
+            Action to update an existing eventItem
+            </summary>
+            <param name="id">Id to update an existing eventItem.</param>
+            <param name="editEventItem">Model to update an existing eventItem.</param>
+            <returns>Returns the updated eventItem</returns>
+            <response code="200">Returned if the eventItem was updated</response>
+            <response code="400">Returned if the model couldn't be parsed</response>
+            <response code="404">Returned if the eventItem couldn't be found</response>
+            <response code="422">Returned when the validation failed</response>
+        </member>
+        <member name="M:Calendar.Endpoints.WebAPI.Controllers.CalendarController.DeleteEvent(System.Guid)">
+            <summary>
+            Action to delete an existing eventItem
+            </summary>
+            <param name="id">Id to delete an existing eventItem.</param>
+            <returns>Returns the status of action</returns>
+            <response code="200">Returned if the eventItem was deleted</response>
+            <response code="404">Returned if the eventItem couldn't be found</response>
+        </member>
+    </members>
+</doc>

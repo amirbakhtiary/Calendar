@@ -9,8 +9,8 @@ namespace Calendar.Endpoints.WebAPI.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class MaintenanceController: ControllerBase
     {
-        private readonly CalendarDBContext _calendarDBContext;
-        public MaintenanceController(CalendarDBContext calendarDBContext)
+        private readonly CalendarContext _calendarDBContext;
+        public MaintenanceController(CalendarContext calendarDBContext)
         {
             _calendarDBContext = calendarDBContext;
         }
