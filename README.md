@@ -7,7 +7,7 @@ Also use Repository pattern and EF Core for the CRUD.
 For run the project: docker-compose up
 
 ### Database Configuration
-after run project for add database please go to this address: http://localhost:9080/api/maintenance/adddb
+after run project database created automatically.
 
 ## Documentation
 Help for executing the API:
