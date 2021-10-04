@@ -12,7 +12,9 @@ after run project database created automatically.
 ## Documentation
 Help for executing the API:
 https://documenter.getpostman.com/view/5287501/UUxxhp6j
+
 Swagger Url: http://localhost:9080/swagger/index.html
+
 API Url: http://localhost:9080/
 
 ## Technologies
